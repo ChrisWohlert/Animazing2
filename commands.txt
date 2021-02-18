@@ -1,0 +1,5 @@
+
+nix-shell -A shells.ghcjs
+cabal --project-file=cabal-ghcjs.project --builddir=dist-ghcjs new-build frontend
+
+nix-shell -A shells.ghc --run "cabal --project-file=cabal.project repl frontend"
