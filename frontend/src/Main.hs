@@ -60,11 +60,12 @@ clickEvent w =
 
 tsvg :: MonadWidget t m => m ()
 tsvg = do 
-  rec
-    imgs <- mapM (\ (i, f) -> elDynAttr "div" ((\ a -> showImg i a) <$> dynFrameState) $ f) (zip [0 .. 50] gif)
-    now <- liftIO getCurrentTime
-    tick <- tickLossy (1 / 50) now
-    dynFrameState <- foldDyn (player) 0 (1 <$ tick)
+  elDynHtml' "div" (constDyn testSvg)
+  el "style" $ text "@keyframes example { from { stroke-dashoffset: 2000; } to { stroke-dashoffset: 0; } }"
+  el "style" $ text ".gg { animation-name: example; animation-duration: 4s; stroke-dasharray: 2000; }"
+  now <- liftIO getCurrentTime
+  tick <- tickLossy (1 / 50) now
+  dynFrameState <- foldDyn (player) 0 (1 <$ tick)
   return ()
 
 showImg b fi = if b == fi then ("style" =: ("display: block")) else ("style" =: ("display: none")) 
